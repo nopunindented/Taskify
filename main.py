@@ -11,7 +11,7 @@ intents.message_content = True
 
 load_dotenv()
 TOKEN= os.getenv('DISCORD_TOKEN')
-client= commands.Bot()
+client= commands.Bot(c_l= '/')
 
 @client.comman
 
