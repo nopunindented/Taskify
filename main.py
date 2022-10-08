@@ -1,33 +1,43 @@
-import discord
-from discord import commands
-from discord import guilds
-from discord_slash import SlashCommand, SlashContext
-from discord_slash.utils.manage_commands import create_choice, create_option
-
+import discord, asyncio
+from datetime import datetime, timedelta
+from discord.ext import commands
+from discord import app_commands
+import time
+from time import sleep
 import os
 from dotenv import load_dotenv
+
+#intents
 intents = discord.Intents.default()
 intents.message_content = True
 
+#timer
+def meetingtimer(number_of_seconds):
+  if datetime.now()!=datetime.now() + timedelta(seconds=number_of_seconds):
+    time.sleep(number_of_seconds)
+
+#initialize client
 load_dotenv()
 TOKEN= os.getenv('DISCORD_TOKEN')
-client= commands.Bot(c_l= '/')
+bot= commands.Bot(command_prefix= '!', intents= discord.Intents.default())
 
-@client.comman
+class Bot(commands.Bot):
+  def __init__(self):
+    intents= discord.Intents.all()
+    intents.message_content= True
+    super().__init__(command_prefix= "/", intents=intents)
 
-@client.event
-async def on_ready():
-  print('Logged in as {0.user}'.format(client))
+  async def setup_hook(self):
+   self.tree.copy_global_to(guild=discord.Object(id=1026654218104348682))
+   await self.tree.sync()
+   print("Slash commands have been synced!")
 
-@client.event
-async def on_message(message):
-  #to prevent bot from replying to itself
-  if message.author== client.user:
-    return
+bot= Bot()
 
-    
-  elif message.content== '$hello':
-    await message.channel.send('bruh')
+@bot.hybrid_command(name= 'setmeetingtime', description= 'Sets Meeting Time')
+async def setmeetingtime(ctx:commands.Context, time_in_hours: float):
+  await asyncio.sleep(time_in_hours*3600)
+  await ctx.channel.send('Meeting has begun :wave:')
 
 
-client.run(TOKEN)
+bot.run(TOKEN)
