@@ -35,9 +35,9 @@ class Bot(commands.Bot):
 bot= Bot()
 
 @bot.hybrid_command(name= 'setmeetingtime', description= 'Sets Meeting Time')
-async def setmeetingtime(ctx:commands.Context, time_in_hours: float):
+async def setmeetingtime(ctx:commands.Context, time_in_hours: float, role: discord.Role, rolex: discord.Role):
   await asyncio.sleep(time_in_hours*3600)
-  await ctx.channel.send('Meeting has begun :wave:')
+  await ctx.channel.send(f"{role.mention} and {role.mention} the meeting has begun :wave:")
 
 
 bot.run(TOKEN)
