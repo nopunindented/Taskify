@@ -19,7 +19,7 @@ def meetingtimer(number_of_seconds):
 #initialize client
 load_dotenv()
 TOKEN= os.getenv('DISCORD_TOKEN')
-bot= commands.Bot(command_prefix= '!', intents= discord.Intents.default())
+bot= commands.Bot(command_prefix= '/', intents= discord.Intents.default())
 
 class Bot(commands.Bot):
   def __init__(self):
@@ -34,10 +34,11 @@ class Bot(commands.Bot):
 
 bot= Bot()
 
+
 @bot.hybrid_command(name= 'setmeetingtime', description= 'Sets Meeting Time')
-async def setmeetingtime(ctx:commands.Context, time_in_hours: float, role: discord.Role, rolex: discord.Role):
+async def setmeetingtime(ctx:commands.Context, time_in_hours: float, role: discord.Role,role2: discord.Role,role3: discord.Role,role4: discord.Role,role5: discord.Role):
   await asyncio.sleep(time_in_hours*3600)
-  await ctx.channel.send(f"{role.mention} and {role.mention} the meeting has begun :wave:")
+  await ctx.channel.send(f"{role.mention} {role2.mention} {role3.mention} {role4.mention} {role5.mention} the meeting has begun :wave:")
 
 
 bot.run(TOKEN)
