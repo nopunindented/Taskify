@@ -1,9 +1,8 @@
 import discord, asyncio
 from datetime import datetime, timedelta
+from webserver import keep_alive
 from discord.ext import commands
 from discord import app_commands
-import time
-from time import sleep
 import os
 from dotenv import load_dotenv
 
@@ -73,5 +72,5 @@ async def setmeetingtime5roles(ctx:commands.Context, time_in_hours: float, role:
   newtime= now + timedelta(time_in_hours*3600)
   newtimed= newtime.strftime("%H:%M:%S")
 """
-
+keep_alive()
 bot.run(TOKEN)
