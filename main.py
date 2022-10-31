@@ -35,7 +35,7 @@ class Bot(commands.Bot):
 bot= Bot()
 
 
-@bot.hybrid_group(name= 'meetingtimeanddat', fallback="get")
+@bot.hybrid_group(name= 'meetingtimescommands', fallback="get")
 async def meetings(ctx:commands.Context):
   await ctx.send("Setting Meeting Time")
 
@@ -64,7 +64,25 @@ async def setmeetingtime5roles(ctx:commands.Context, time_in_hours: float, role:
   await asyncio.sleep(time_in_hours*3600)
   await ctx.channel.send(f"{role.mention} {role2.mention} {role3.mention} {role4.mention} {role5.mention} the meeting has begun! :wave:")
 
+@bot.hybrid_group(name= 'eventtime', fallback="get")
+async def eventss(ctx:commands.Context):
+  await ctx.send("Set Event Time")
 
+@eventss.command()
+async def seteventandtime(ctx:commands.Context, event_name: str,event_time_in_hours: int):
+  global event_is
+  event_is= event_name
+  global time_remaining
+  time_remaining= event_time_in_hours
+  for i in range(0, event_time_in_hours*3600):
+    time_remaining= event_time_in_hours-(1/3600)
+    round(time_remaining, 4)
+    await asyncio.sleep(1)
+
+@eventss.command()
+async def checkremainingtimeinevent(ctx:commands.Context):
+  await ctx.channel.send(f"The time remaining for the {event_is} event is {time_remaining}!")
+  
 """datetimetinkering
 
   now= datetime.now()
