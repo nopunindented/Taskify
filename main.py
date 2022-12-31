@@ -83,15 +83,26 @@ async def readysteady(ctx:commands.Context, confirmation:str):
   if confirmation== 'yes':
     myloop.start()
 
-
-@tasks.loop(seconds=3600)
+  
+  
+@tasks.loop(minutes=3600)
 async def myloop():
   channel= bot.get_channel(1026654218104348685)
+  global time_elapsed
   time_elapsed=0
   while time_elapsed<event_length:
-    await channel.send(f"Time left is {time_elapsed}")
     time_elapsed+=1
+    a_quarter= event_length/4
     time.sleep(1)
+    if time_elapsed== a_quarter:
+      await channel.send(f"Time left is {time_elapsed}")
+    elif time_elapsed== a_quarter*2:
+      await channel.send(f"Time left is {time_elapsed}")
+    elif time_elapsed== a_quarter*3:
+      await channel.send(f"Time left is {time_elapsed}")
+    elif time_elapsed== event_length:
+      await channel.send(f"Time left is {time_elapsed}")
+      
 
 keep_alive()
 bot.run(TOKEN)
