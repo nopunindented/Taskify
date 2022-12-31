@@ -5,6 +5,9 @@ from discord.ext import commands
 from discord import app_commands
 import os
 from dotenv import load_dotenv
+import time
+from time import sleep
+from discord.ext import tasks
 
 #intents
 intents = discord.Intents.default()
@@ -72,23 +75,23 @@ async def eventss(ctx:commands.Context):
 async def seteventandtime(ctx:commands.Context, event_name: str,event_time_in_hours: int):
   global event_is
   event_is= event_name
-  global time_remaining
-  time_remaining= event_time_in_hours
-  for i in range(0, event_time_in_hours*3600):
-    time_remaining= event_time_in_hours-(1/3600)
-    round(time_remaining, 4)
-    await asyncio.sleep(1)
+  global event_length
+  event_length= event_time_in_hours*3600
 
 @eventss.command()
-async def checkremainingtimeinevent(ctx:commands.Context):
-  await ctx.channel.send(f"The time remaining for the {event_is} event is {time_remaining}!")
-  
-"""datetimetinkering
+async def readysteady(ctx:commands.Context, confirmation:str):
+  if confirmation== 'yes':
+    myloop.start()
 
-  now= datetime.now()
-  hourized=now.strftime("%H:%M:%S")
-  newtime= now + timedelta(time_in_hours*3600)
-  newtimed= newtime.strftime("%H:%M:%S")
-"""
+
+@tasks.loop(seconds=3600)
+async def myloop():
+  channel= bot.get_channel(1026654218104348685)
+  time_elapsed=0
+  while time_elapsed<event_length:
+    await channel.send(f"Time left is {time_elapsed}")
+    time_elapsed+=1
+    time.sleep(1)
+
 keep_alive()
 bot.run(TOKEN)
